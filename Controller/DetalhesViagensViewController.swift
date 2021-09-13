@@ -14,12 +14,17 @@ class DetalhesViagensViewController: UIViewController {
     @IBOutlet weak var labelDescricaoPacoteViagem: UILabel!
     @IBOutlet weak var labelDataViagem: UILabel!
     @IBOutlet weak var labelPrecoPacoteViagem: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tfData: UITextField!
     
     var pacoteSelecionado: PacoteViagem? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(aumentarScroll), name:UIResponder.keyboardWillShowNotification, object: nil)
+
+        
         if let pacote = pacoteSelecionado{
             self.imagemPacoteViagem.image = UIImage(named: pacote.viagem.caminhoDaImagem)
             self.labelTituloPacoteViagem.text = pacote.viagem.titulo
@@ -32,12 +37,30 @@ class DetalhesViagensViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @objc func aumentarScroll(notification: Notification){
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.scrollView.frame.height + 320)
+    }
+    
     @IBAction func btVoltar(_ sender: UIButton) {
         
         self.dismiss(animated: true, completion: nil)
         
     }
     
+    @objc func exibeDataTextField(sender: UIDatePicker){
+        let formatador = DateFormatter()
+        formatador.dateFormat = "dd MM yyyy"
+        self.tfData.text = formatador.string(from: sender.date)
+    }
+    
+    @IBAction func tfDataValidadeCartao(_ sender: UITextField) {
+        
+        let datePickerView = UIDatePicker()
+        datePickerView.datePickerMode = .date
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(exibeDataTextField), for: .valueChanged)
+        
+    }
     /*
     // MARK: - Navigation
 
