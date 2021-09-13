@@ -31,15 +31,10 @@ class AluraViagensHomeViewController: UIViewController, UITableViewDelegate, UIT
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "viagemCell", for: indexPath) as? ViagemTableViewCell else{
             return UITableViewCell()
         }
-        cell.imgViewDestino.layer.cornerRadius = 10
-        cell.imgViewDestino.clipsToBounds = true
+
         let viagem = listaViagens[indexPath.row]
         
-        cell.labelDestino.text = viagem.titulo
-        cell.labelPreco.text = "R$ \(viagem.preco)"
-        cell.labelDuracao.text = "\(viagem.quantidadeDeDias) dias"
-        cell.imgViewDestino.image = UIImage(named: viagem.caminhoDaImagem)
-        
+        cell.configuraCelula(viagem: viagem)
         
         return cell
     }

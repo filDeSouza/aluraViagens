@@ -36,12 +36,7 @@ class PacotesViagensViewController: UIViewController, UICollectionViewDataSource
         let celulaPacote = collectionView.dequeueReusableCell(withReuseIdentifier: "celulaPacote", for: indexPath) as! PacoteViagemCollectionViewCell
         
         let pacoteAtual = listaViagens[indexPath.row]
-        
-        celulaPacote.imagemViagem.image = UIImage(named: pacoteAtual.viagem.caminhoDaImagem)
-        celulaPacote.labelTitulo.text = pacoteAtual.viagem.titulo
-        celulaPacote.labelqtdDias.text = "\(pacoteAtual.viagem.quantidadeDeDias)"
-        celulaPacote.labelValor.text = "R$ \(pacoteAtual.viagem.preco)"
-        
+        celulaPacote.configuraCelula(pacoteViagem: pacoteAtual)
         celulaPacote.layer.borderWidth = 0.5
         celulaPacote.layer.borderColor = UIColor(red: 85.0/255.0, green: 85.0/255.0, blue: 85.0/255.0, alpha: 1).cgColor
         
@@ -59,13 +54,13 @@ class PacotesViagensViewController: UIViewController, UICollectionViewDataSource
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyBoard.instantiateViewController(withIdentifier: "detalhes") as! DetalhesViagensViewController
         controller.pacoteSelecionado = pacote
-        self.present(controller, animated: true, completion: nil)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         listaViagens = listaComTodasViagens
         if searchText != "" {
-            let filtroListaPacotes = NSPredicate(format: "titulo contains %@", searchText)
+            let filtroListaPacotes = NSPredicate(format: "viagem.titulo contains %@", searchText)
             let listaFiltrada: Array<PacoteViagem> = (listaViagens as NSArray).filtered(using: filtroListaPacotes) as! Array
             listaViagens = listaFiltrada
         }

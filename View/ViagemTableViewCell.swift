@@ -29,6 +29,16 @@ class ViagemTableViewCell: UITableViewCell {
         numberFormatter.maximumFractionDigits = 2
     }
     
+    func configuraCelula(viagem: Viagem){
+        
+        imgViewDestino.layer.cornerRadius = 10
+        imgViewDestino.clipsToBounds = true
+        labelDestino.text = viagem.titulo
+        labelPreco.text = "R$ \(viagem.preco)"
+        labelDuracao.text = viagem.quantidadeDeDias == 1 ? "1 dia" : "\(viagem.quantidadeDeDias) dias"
+        imgViewDestino.image = UIImage(named: viagem.caminhoDaImagem)
+    }
+    
     private func setData(){
         guard let viagem = viagem else {return}
         
